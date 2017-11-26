@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+        <script  type="text/javascript">
+            angular.module('adminUpdate', [])
+                    .controller('adminUpdateContrl', ['$scope','$http', function ($scope ,$http) {
+                            var model = this;
+                            var tN=$('.testNameClass').attr('id');
+                            var tT=<%-result.testTime%> ;
+                            console.log(tN.toString()+"====="+tT);
+                      model.testQustionsUpdate = function () {
+
+                                model.testName = tN;
+                                model.testTime = tT;
+                                console.log("comming:::testUpateSubmit----" +model.testName);
+                                console.log("+=+=+="+model.testName);
+                                for (i = 0; i <= 2; i++) {
+                                    console.log("i--"+i);
+                                    var getTestNames = model.testName+i;
+                                    console.log($('#'+getTestNames).val());
+                                    model.testQuestion = $('#'+getTestNames).val();
+                                    if($('form input[name='+ model.testName+i+']:checked')){
+                                    var answ = $('form input[name='+ model.testName+i+']:checked').attr('class');
+                                        model.testAnswer=$('#'+answ).val();
+                                        console.log(model.testName+i+"--Answer checked value is--"+model.testAnswer);
+                                    }
+                                    for (j = 1; j <= 4; j++) {
+                                         if(j=='1'){
+                                        console.log($('#'+(model.testName)+i+'a').val());
+                                        model.testOptionA = $('#'+(model.testName)+i+'a').val() ;
+                                         }else
+                                         if(j=='2'){
+                                        console.log($('#'+(model.testName)+i+'b').val());
+                                        model.testOptionB = $('#'+(model.testName)+i+'b').val() ;
+                                         }else
+                                         if(j=='3'){
+                                        console.log($('#'+(model.testName)+i+'c').val());
+                                        model.testOptionC = $('#'+(model.testName)+i+'c').val() ;
+                                         }else
+                                         if(j=='4'){
+                                        console.log($('#'+(model.testName)+i+'d').val());
+                                        model.testOptionD = $('#'+(model.testName)+i+'d').val() ;
+                                         }
+                                    }
+                                     // console.log('testName--'+model.testName+'testTime--'+model.testTime+'testAnswer--'+model.testAnswer+'testQuestion--'+model.testQuestion+'testOptionA--'+model.testOptionA+'testOptionB--'+model.testOptionB+'testOptionC--'+model.testOptionC+'testOptionD--'+model.testOptionD);
+                                      model.options=[model.testOptionA , model.testOptionB,  model.testOptionC , model.testOptionD ]
+
+                                      if(i =='0'){
+                                        model.testDetails0 ={testQuestion:model.testQuestion ,testAnswer: model.testAnswer , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if(i =='1'){
+                                        model.testDetails1 ={testQuestion:model.testQuestion ,testAnswer: model.testAnswer , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='2'){
+                                        model.testDetails2 ={ testQuestion:model.testQuestion ,testAnswer: model.testAnswer , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }
+
+                                      
+                                }
+                                var testData = {
+                                                   testName  :  model.testName ,
+                                                    testTime : model.testTime,
+                                                    testDetails: [model.testDetails0 ,model.testDetails1, model.testDetails2 ] 
+                                                          }; 
+                                model.res = $http.post('/adminUpdate/<%-result._id%>', testData);
+                                console.log(testData)
+                                model.res.success(function(data, status, headers, config) {
+                                    alert("success");
+                                    document.location.href ='/adminVU'
+                                });
+                                model.res.error(function(data, status, headers, config) {
+                                    alert( "Some thing went wrong Please try after");
+                                }); 
+
+                            };
+
+                        }]);
+        </script>
+        <style type="text/css">
+            body {
+                position: relative; 
+            }
+            .padding-left20{padding-left: 20px;}
+            .padding-left50{padding-left: 50px;}
+            .padding-left100{padding-left: 100px;}
+            .margin-left25{margin-left: 25%;}
+            .padding-top20{padding-top: 20px;}
+            .padding-bottom20{padding-bottom: 20px;}
+            footer a{color:#f5f5f5;}
+            .footer{background: #343a40 !important; padding: 30px;}
+            .form-control{width: 80% !important;}
+        </style> 
+    </head>
+    <body data-spy="scroll" data-target=".navbar" data-offset="50" ng-clock ng-app="adminUpdate">
+        <div  ng-controller="adminUpdateContrl as admnupctl">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">  
+                <ul class="navbar-nav">
+                     <li class="nav-item padding-left20">
+                        <a class="nav-link btn btn btn-outline-warning" href="/">HOME</a>
+                    </li>
+                    <li class="nav-item padding-left20">
+                        <a class="nav-link btn btn btn-outline-success" href="/admin" >Create Test</a>
+                    </li>
+                    <li class="nav-item padding-left20"> 
+                        <a class="nav-link btn btn btn-outline-info" href="/adminVU">View & Update Test & Delete Test</a>
+                    </li>
+                    <li class="nav-item padding-left20" >
+                        <a class="nav-link btn btn-outline-danger" href="/adminLU">List Of Users</a>
+                    </li>
+        <li class="nav-item padding-left20" ><a class="nav-link btn btn-outline-danger"  href="/logout">LOGOUT</a></li>
+                    
+                </ul>
+            </nav>
+            <div id="createSection" class="container-fluid bg-light" style="padding-top:90px;padding-bottom:10px;">
+                <h1 class="text-center">Update Test</h1>
+                <p class="text-center text-warning">Hey , Give proper values Man , Don't come here again :) <br/>
+                    And Remind you can't edit Test Name and Test Time.
+                </p>
+                        </div>
+            <div class="clearfix"></div>
+            <div id="updateSection" class="container-fluid bg-light" style="padding-bottom:10px;padding-left: 30px;">
+              
+                <form id="<%= result.testName %>" class='testNameClass'>
+                    <% for(i=0;i< result.testDetails.length; i++) { %>
+                    <div class="form-inline">
+                        <label>Q). <%= i %></label> &nbsp;&nbsp;&nbsp; <input class="form-control" type="text" value="<%=result.testDetails[i].testQuestion %> " placeholder="Please enter a Qustion Here" id="<%= result.testName %><%= i %>" required/>--A). <%=result.testDetails[i].testAnswer%></div>
+                        <div class="radio padding-top20 padding-left50 padding-bottom20">
+                            <label><input type="radio" name="<%= result.testName %><%= i %>" class="<%= result.testName%><%= i %>a"> <input id="<%= result.testName %><%= i %>a" type="text" value="<%=result.testDetails[i].testOptionA %> "  required /></label>
+
+                            <label><input type="radio" name="<%= result.testName %><%= i %>" class="<%= result.testName%><%= i %>b" > <input id="<%= result.testName %><%= i %>b"  type="text" value="<%=result.testDetails[i].testOptionB %>"  required /> </label>
+
+                            <label><input type="radio" name="<%= result.testName %><%= i %>" class="<%= result.testName%><%= i %>c" > <input id="<%= result.testName %><%= i %>c"  type="text" value="<%=result.testDetails[i].testOptionC %>"  required /> </label>
+
+                            <label><input type="radio" name="<%= result.testName %><%= i %>" class="<%= result.testName%><%= i %>d" > <input id="<%= result.testName %><%= i %>d" type="text" value="<%=result.testDetails[i].testOptionD %>"  required /> </label>
+                        </div>
+                       <% } %> 
+                    <div class="text-center padding-top20"><button type="submit" class="btn btn-primary" ng-click="admnupctl.testQustionsUpdate(<%= result.testName %>);"> Update Test</button></div>
+                </form>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <footer class="text-center footer">
+  <p><a href='mailto:chandrashekar.mungi@gmail.com'>Chandrashekar.mungi@gmail.com</a></p>
+</footer>
+    </body>
+</html>

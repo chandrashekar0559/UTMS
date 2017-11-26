@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+        <script  type="text/javascript">
+            angular.module('adminCon', [])
+                    .controller('adminContrl', ['$scope','$http', function ($scope ,$http) {
+                            var model = this;
+                            
+                            $http({
+                                    method : "GET",
+                                    url : "listOfUsers"
+                                }).then(function mySuccess(response) {
+                                    model.listOfUsers = response.data;
+                                    console.log(model.listOfUsers);
+                                }, function myError(response) {
+                                    model.listOfTests = response.statusText;
+                                    console.log("erro"+model.listOfUsers);
+                                });
+                         
+                        }]);
+        </script>
+        <style type="text/css">
+            body {
+                position: relative; 
+            }
+            .padding-left20{padding-left: 20px;}
+            .padding-left50{padding-left: 50px;}
+            .padding-left100{padding-left: 100px;}
+            .margin-left25{margin-left: 25%;}
+            .padding-top20{padding-top: 20px;}
+            footer a{color:#f5f5f5;}
+            .footer{background: #343a40 !important; padding: 30px;}
+        </style> 
+    </head>
+    <body data-spy="scroll" data-target=".navbar" data-offset="50" ng-clock ng-app="adminCon">
+        <div  ng-controller="adminContrl as admnctl">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">  
+                <ul class="navbar-nav">
+                     <li class="nav-item padding-left20">
+                        <a class="nav-link btn btn btn-outline-warning" href="/">HOME</a>
+                    </li>
+                    <li class="nav-item padding-left20" >
+                        <a class="nav-link btn btn btn-outline-success" href="/admin" >Create Test</a>
+                    </li>
+                    <li class="nav-item padding-left20"> 
+                        <a class="nav-link btn btn btn-outline-info" href="/adminVU">View & Update & Delete Test</a>
+                    </li>
+                    <li class="nav-item padding-left20" >
+                        <a class="nav-link btn btn-outline-danger" href="#">List Of Users</a>
+                    </li>
+        <li class="nav-item padding-left20" ><a class="nav-link btn btn-outline-danger"  href="/logout">LOGOUT</a></li>
+
+                </ul>
+            </nav>
+            <div id="createSection" class="container bg-light" style="padding-top:100px;padding-bottom:100px;">
+                <h1 class="text-center">List Of Users</h1>
+                <p class="text-center">If you want see particular User performance , just click on User Email. </p>
+                <div class="text-center">
+                 <table class="table table-striped table-hover" >
+                        <thead class="thead-dark">
+                        <tr>
+                        <th>User Mail</th>
+                        <th>User ID </th>
+                       </tr>
+                        </thead>
+                        <tbody ng-repeat=" lou in admnctl.listOfUsers">
+                        <tr id={{lou._id}}>
+                        <td style="cursor: pointer;font: bold;"><a href="/dashboard/{{lou.local.email || lou.facebook.email || lou.google.email }}">{{ lou.local.email || lou.facebook.email || lou.google.email }}</a></td>
+                        <td>{{ lou._id }}</td>
+                        </tr> 
+                        </tbody>
+                        </table>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+    
+                         <div data-toggle="modal" data-target="#myModal" id='selectOption' style="display: none;"></div>
+                         <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title text-center">Are You Sure ?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Hey , you are permentaly deleting this TEST From que is it Okay?</p>
+                  <div class="text-center">
+                    <button type="button" class="btn btn-lg btn-success" ng-click='admnctl.yes();'>Yes!</button>
+                    <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">NO!</button>
+                  </div>
+                  </div>
+                </div>
+            </div>
+
+              </div>
+            <div class="clearfix"></div>
+        </div>
+        <footer class="text-center footer">
+  <p><a href='mailto:chandrashekar.mungi@gmail.com'>Chandrashekar.mungi@gmail.com</a></p>
+</footer>
+    </body>
+</html>

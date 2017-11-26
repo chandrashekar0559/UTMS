@@ -1,0 +1,317 @@
+<!doctype html>
+<html>
+<head>
+	<title>User Test Management System-UTMS</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+  body{font:400 15px/1.8 Lato,sans-serif;color:#777}h3,h4{margin:10px 0 30px;letter-spacing:10px;font-size:20px;color:#111}.container{padding:80px 120px}.person{border:10px solid transparent;margin-bottom:25px;width:80%;height:80%;opacity:.7}.person:hover{border-color:#f1f1f1}.carousel-inner img{-webkit-filter:grayscale(90%);filter:grayscale(90%);width:100%;margin:auto}.carousel-caption h3{color:#fff!important}@media (max-width:600px){.carousel-caption{display:none}}.bg-1{background:#2d2d30;color:#bdbdbd}.bg-1 h3{color:#fff}.bg-1 p{font-style:italic}.list-group-item:first-child{border-top-right-radius:0;border-top-left-radius:0}.list-group-item:last-child{border-bottom-right-radius:0;border-bottom-left-radius:0}.thumbnail{padding:0 0 15px;border:none;border-radius:0}.thumbnail p{margin-top:15px;color:#555}.btn{padding:10px 20px;background-color:#333;color:#f1f1f1;border-radius:0;transition:.2s}.btn:focus,.btn:hover{border:1px solid #333;background-color:#fff;color:#000}.close,.modal-header,h4{background-color:#333;color:#fff!important;text-align:center;font-size:30px}.modal-body,.modal-header{padding:40px 50px}.nav-tabs li a{color:#777}#googleMap{width:100%;height:400px;-webkit-filter:grayscale(100%);filter:grayscale(100%)}.navbar{font-family:Montserrat,sans-serif;margin-bottom:0;background-color:#2d2d30;border:0;font-size:11px!important;letter-spacing:4px;opacity:.9}.navbar .navbar-brand,.navbar li a{color:#d5d5d5!important}.navbar-nav li a:hover{color:#fff!important}.navbar-nav li.active a{color:#fff!important;background-color:#29292c!important}.navbar-default .navbar-toggle{border-color:transparent}.open .dropdown-toggle{color:#fff;background-color:#555!important}.dropdown-menu li a{color:#000!important}footer,footer a{color:#f5f5f5}.dropdown-menu li a:hover{background-color:red!important}footer{background-color:#2d2d30;padding:32px}footer a:hover{color:#777;text-decoration:none}.form-control{border-radius:0}textarea{resize:none}
+      .fa-facebook , .btn-primary , .btn-primary:hover{background-color: #428bca; border-color: #357ebd;   color: #fff;}
+      .fa-google-plus , .btn-danger ,.btn-danger:hover{	color: #fff; background-color: #d9534f;  border-color: #d43f3a;}
+    </style>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<style type="text/css">
+	.navbar .navbar-brand,.navbar li a{color:#d5d5d5!important}.navbar-nav li a:hover{color:#fff!important}.navbar-nav li.active a{color:#fff!important;background-color:#29292c!important}.navbar-default .navbar-toggle{border-color:transparent}
+	.navbar{background: #777;}
+	  body {
+                position: relative; 
+            }
+            .padding-left20{padding-left: 20px;}
+            .padding-left50{padding-left: 50px;}
+            .padding-left100{padding-left: 100px;}
+            .margin-left25{margin-left: 25%;}
+            .padding-top20{padding-top: 20px;}
+            #chartdiv {
+  width: 100%;
+  height: 500px;
+}       .amcharts-chart-div a{display:  none !important;}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+        <script  type="text/javascript">
+                    angular.module('dashbordCon', [])
+                    .controller('dashbContrl', ['$scope','$http', function ($scope,$http) {
+                    var model = this;
+                                    var le= $('#localEmail').text();
+                                    var fe = $('#facebookEmail').text();
+                                    var ge = $('#googleEmail').text();
+                                     if(le.length > 0 || fe.length > 0 || ge.length > 0 ){
+                                        model.userEmail = le || fe || ge ;
+                                     }                       
+                                    model.uE= (model.userEmail).trim();
+
+                                  if(model.uE =="admin@gmail.com"){
+                                     var pageHref = window.location.href ;
+                                   model.userEmail = pageHref.split('/dashboard/')[1] ;
+                                    model.uE= (model.userEmail).trim();
+                                  }
+                                        // console.log("EMAIL--"+model.uE);
+                    
+                            var actualrURL = '/testResult/'+model.uE ;
+                            // console.log(actualrURL);
+                                 $http({
+                                    method : "GET",
+                                    url : actualrURL
+                                }).then(function mySuccess(result) {
+                                    model.resultData = result.data  ;
+                                    // console.log(model.resultData);
+                                    model.resultDataLength =result.data.length ;
+                                                model.myResultArray= '';
+                                            for(i=0 ; i<model.resultDataLength; i++){
+                                                // console.log(model.resultData[i].testResult);
+                                                model.myResultArray = Number(model.myResultArray) + Number(model.resultData[i].testResult) ;
+                                            }
+
+                                   }, function myError(result) {
+                                    model.errorData = result.statusText;
+                                    console.log("erro"+result);
+                                });
+
+
+                                    $http({
+                                    method : "GET",
+                                    url : "listOfTests"
+                                }).then(function mySuccess(response) {
+                                    model.listOfTests = response.data;
+                                    // console.log(model.listOfTests);
+                                    model.listOfTestsLength = response.data.length ;
+                                    // console.log(model.listOfTestsLength)
+                                }, function myError(response) {
+                                    model.listOfTests = response.statusText;
+                                    console.log("erro"+model.listOfTests);
+                                });      
+
+                                      
+                    }]);        </script>
+        <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+
+</head>
+<body ng-clock ng-app="dashbordCon">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand " href="#" style="font: bold;font-style: italic;font-size: 30px;padding-bottom: 10px;"> <span class="glyphicon glyphicon-book"></span> UTMS</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">HOME</a></li>
+        <li><a href="/logout">LOGOUT</a></li>
+        <li><a href="/taketest">Take a Test</a></li>
+        <li><a href="/contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container" ng-controller="dashbContrl as dshbctl">
+              <div class="">
+               <% if (user.local.email)  { %>
+                    <div class="well well-sm text-center">  <strong>email</strong>:<span id="localEmail"> <%= user.local.email %> </span> <br></div>
+                    <% } else if (user.facebook.token) { %>
+                        <div class="well well-sm text-center"><strong>email</strong>:<span id='facebookEmail'>  <%= user.facebook.email %></span><br></div>
+                        <% } else if (user.google.token) { %>
+                        <div class="well well-sm text-center"><strong>email</strong>:<span id='googleEmail'>  <%= user.google.email %></span><br></div>
+                <% } %>
+
+                <div class="container">
+                    <div class="row">
+                        <input type="hidden" id="resultdataLength"  value="{{dshbctl.resultDataLength}}" />
+                        <input type="hidden" id="listofTests"  value="{{dshbctl.listOfTestsLength}}" />
+                        <input type="hidden" id="myMarks"  value="{{dshbctl.myResultArray}}" />
+
+                  <div class="clearfix"></div>
+                  <div class="">
+                      <div class="text-center ">
+                        <div style="padding-bottom: 10px;"><b>Already User had tests</b></div>
+                 <table class="table table-bordered padding-top20">
+                        <thead class="text-center">
+                        <tr >
+                        <th style="text-align: center !important;">Test Name</th>
+                        <th style="text-align: center !important;">Marks</th>
+                        <th style="text-align: center !important;">Test Time</th>
+                        <th style="text-align: center !important;">To view Complete Result</th>
+
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat=" lot in dshbctl.resultData">
+                        <tr id={{lot.testName}}>
+                        <td>{{ lot.testName }}</td>
+                        <td>{{ lot.testResult}}</td>
+                        <td>{{ lot.testTime }}</td>
+                        <td><a href="/result/{{lot.userEmail}}/{{lot.testName}}" class="btn btn-primary">Result  </a></td>
+                        </tr> 
+
+                        </tbody>
+                        </table>
+
+                </div>
+
+                  </div>
+                 <div class="text-center"> <button class="btn btn-lg btn-success" onclick="statics()">To View Statistics Result</button></div>
+                 <div id="statics" style="display: none;"> <div class="col-lg-8 col-md-8">     <div id="chartdiv"></div></div>
+                  <div class="col-lg-4 col-md-4" style="color: #000;font-style: italic;font:bold;"> 
+                     <table class="table table-bordered padding-top20">
+                        <tbody>
+                        <tr style="background: rgb(255, 102, 0)">
+                        <td>Taken Tests</td>
+                        <td id='a'></td>
+                        </tr> 
+                        <tr style="background: rgb(255, 252, 2)">
+                        <td>No Of Conducted Tests</td>
+                        <td id='b'></td>
+                        </tr> 
+                        </tbody>
+                        </table>
+                        <div class="clearfix"></div>
+                        <table class="table table-bordered padding-top20">
+                        <tbody>
+                        <tr style="background:rgb(176, 222, 9)">
+                        <td>Your avg Marks</td>
+                        <td id='c'></td>
+                        </tr> 
+                        <tr style="background: rgb(13, 142, 207)">
+                        <td>Total tests Marks</td>
+                        <td id='d'></td>
+                        </tr> 
+                        </tbody>
+                        </table>
+                        <table class="table table-bordered padding-top20">
+                        <tbody >
+                        <tr style="background: rgb(34, 10, 166)">
+                        <td>Persentage Growth In Tests</td>
+                        <td id='e'></td>
+                        </tr> 
+                        <tr style="background: rgb(205, 13, 116)">
+                        <td>Persentage Growth In Marks</td>
+                        <td id='f'></td>
+                        </tr> 
+                        </tbody>
+                        </table>
+
+                   </div>
+                   </div>
+                  <script type="text/javascript">
+                  
+                      function statics(){
+                                $('#statics').show();
+                                   var resultDataLength = $("#resultdataLength").val(); 
+                                   $('#a').text(resultDataLength);
+                                   var listOfTestsLength = $("#listofTests").val();
+                                   $('#b').text(listOfTestsLength);
+                                   var myMarks = $("#myMarks").val();
+                                   $('#c').text(myMarks);
+                                   var totalMarks= listOfTestsLength * 10;
+                                   $('#d').text(totalMarks);
+                                   var inTestPersentage = (resultDataLength/listOfTestsLength) * 100 ; 
+                                   $('#e').text(inTestPersentage);
+                                   var inMarkspersentage =(myMarks /totalMarks) * 100 ;
+                                   $('#f').text(inMarkspersentage);
+                            var chart = AmCharts.makeChart("chartdiv",{
+                                    "theme": "light",
+                                            "type": "serial",
+                                            "dataProvider": [{
+                                            "Tests": "No Of Tests",
+                                                    "testsTaken":  resultDataLength,
+                                                    "totalNoOfTests": listOfTestsLength,
+                                            }, {
+                                            "Tests": "Average Score",
+                                                    "YourMarks": myMarks,
+                                                    "TotalAvgMarks": totalMarks
+                                            }, {
+                                            "Tests": "Persentage Growth",
+                                                    "InTest": inTestPersentage,
+                                                    "INMarks": inMarkspersentage,
+                                            }],
+                                            "startDuration": 1,
+                                            "graphs": [{
+                                            "balloonText": "Taken Tests [[category]]: <b>[[value]]</b>",
+                                                    "fillAlphas": 0.9,
+                                                    "lineAlpha": 0.2,
+                                                    "title": "tests",
+                                                    "type": "column",
+                                                    "valueField": "testsTaken"
+                                            }, {
+                                            "balloonText": "No Of Conducted [[category]] : <b>[[value]]</b>",
+                                                    "fillAlphas": 0.9,
+                                                    "lineAlpha": 0.2,
+                                                    "title": "tests",
+                                                    "type": "column",
+                                                    "valueField": "totalNoOfTests"
+                                            },{
+                                            "balloonText": "Your Marks [[category]]: <b>[[value]]</b>",
+                                                    "fillAlphas": 0.9,
+                                                    "lineAlpha": 0.2,
+                                                    "title": "marks",
+                                                    "type": "column",
+                                                    "valueField": "YourMarks"
+                                            }, {
+                                            "balloonText": "Total Avg Marks [[category]] : <b>[[value]]</b>",
+                                                    "fillAlphas": 0.9,
+                                                    "lineAlpha": 0.2,
+                                                    "title": "marks",
+                                                    "type": "column",
+                                                    "valueField": "TotalAvgMarks"
+                                            }
+                                            ,{
+                                            "balloonText": "In Tests [[category]] : <b>[[value]]</b>",
+                                                    "fillAlphas": 0.9,
+                                                    "lineAlpha": 0.2,
+                                                    "title": "Persentage",
+                                                    "type": "column",
+                                                    "valueField": "InTest"
+                                            },{
+                                            "balloonText": "In Marks [[category]] : <b>[[value]]</b>",
+                                                    "fillAlphas": 0.9,
+                                                    "lineAlpha": 0.2,
+                                                    "title": "Persentage",
+                                                    "type": "column",
+                                                    "valueField": "INMarks"
+                                            }
+                                            ],
+                                            "plotAreaFillAlphas": 0.6,
+                                            "depth3D": 30,
+                                            "angle": 50,
+                                            "categoryField": "Tests",
+                                            "categoryAxis": {
+                                            "gridPosition": "start"
+                                            },
+                                            "export": {
+                                            "enabled": true
+                                            }
+                                    });
+                                    jQuery('.chart-input').off().on('input change', function() {
+                            var property = jQuery(this).data('property');
+                                    var target = chart;
+                                    chart.startDuration = 0;
+                                    if (property == 'topRadius') {
+                            target = chart.graphs[0];
+                                    if (this.value == 0) {
+                            this.value = undefined;
+                            }
+                            }
+                            target[property] = this.value;
+                                    chart.validateNow();
+                                    });
+
+                                }
+                  </script>
+                    </div>   
+                </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+<footer class="text-center">
+  <p><a href='mailto:chandrashekar.mungi@gmail.com'>Chandrashekar.mungi@gmail.com</a></p>
+</footer>
+
+</body>
+</html>

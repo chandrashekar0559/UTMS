@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+        <script  type="text/javascript">
+            angular.module('adminCon', [])
+                    .controller('adminContrl', ['$scope','$http', function ($scope ,$http) {
+                            var model = this;
+                            model.readyToCreateTest = function () {
+                                model.testName = $("#testName").val();
+                                model.testTime = $("#testTime").val();
+                                var testNameLength = ($("#testName").val()).length;
+                                if (model.testName != '' && model.testTime != '' && model.testTime > 1 && model.testTime < 60 && testNameLength > 3 && testNameLength < 12) {
+                                    console.log(model.testName + "---" + model.testTime + "---" + testNameLength);
+                                    $('#createSection').hide();
+                                    $('#editSection').show();
+                                }
+                            };
+                            model.testQustionsSubmit = function (testName) {
+                                console.log("comming:::testQustionsSubmit----" +testName);
+                                model.testName = testName;
+                                console.log("+=+=+="+model.testName);
+                                for (i = 0; i <= 9; i++) {
+                                    console.log("i--"+i);
+                                    model.testQuestionNum = i ;
+                                    var getTestNames = model.testName+i;
+                                    console.log($('#'+getTestNames).val());
+                                    model.testQuestion = $('#'+getTestNames).val();
+                                    if($('form input[name='+ model.testName+i+']:checked')){
+                                    var answ = $('form input[name='+ model.testName+i+']:checked').attr('class');
+                                        model.testAnswer=$('#'+answ).val();
+                                        model.checkId = answ;
+                                        console.log(model.testName+i+"--Answer checked"+ model.checkId+" value is--"+model.testAnswer);
+                                    }
+                                    for (j = 1; j <= 4; j++) {
+                                         if(j=='1'){
+                                        console.log($('#'+(model.testName)+i+'a').val());
+                                        model.testOptionA = $('#'+(model.testName)+i+'a').val() ;
+                                         }else
+                                         if(j=='2'){
+                                        console.log($('#'+(model.testName)+i+'b').val());
+                                        model.testOptionB = $('#'+(model.testName)+i+'b').val() ;
+                                         }else
+                                         if(j=='3'){
+                                        console.log($('#'+(model.testName)+i+'c').val());
+                                        model.testOptionC = $('#'+(model.testName)+i+'c').val() ;
+                                         }else
+                                         if(j=='4'){
+                                        console.log($('#'+(model.testName)+i+'d').val());
+                                        model.testOptionD = $('#'+(model.testName)+i+'d').val() ;
+                                         }
+                                    }
+                                     // console.log('testName--'+model.testName+'testTime--'+model.testTime+'testAnswer--'+model.testAnswer+'testQuestion--'+model.testQuestion+'testOptionA--'+model.testOptionA+'testOptionB--'+model.testOptionB+'testOptionC--'+model.testOptionC+'testOptionD--'+model.testOptionD);
+                                      model.options=[model.testOptionA , model.testOptionB,  model.testOptionC , model.testOptionD ]
+
+                                     if(model.testQuestion !='' && model.testQuestion !='undefined' && model.testAnswer !='' && model.testAnswer !='undefined' && model.testOptionA !='' && model.testOptionA !='undefined' && model.testOptionB !='' && model.testOptionB !='undefined' &&model.testOptionC !='' && model.testOptionC !='undefined' &&model.testOptionD !='' && model.testOptionD !='undefined'  ){
+
+                                      if(i =='0'){
+                                        model.testDetails0 ={testQuestionNum: model.testQuestionNum ,testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='1'){
+                                        model.testDetails1 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='2'){
+                                        model.testDetails2 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='3'){
+                                        model.testDetails3 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer,testAnswerID:model.checkId , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='4'){
+                                        model.testDetails4 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer,testAnswerID:model.checkId , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='5'){
+                                        model.testDetails5 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='6'){
+                                        model.testDetails6 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='7'){
+                                        model.testDetails7 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer,testAnswerID:model.checkId , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='8'){
+                                        model.testDetails8 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='9'){
+                                        model.testDetails9 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }
+
+                                      }
+                                      else{
+                                        alert("Please fill the all detalis!!");
+                                        return false;
+                                      }
+                                }
+                                var testData = {
+                                                   testName  :  model.testName ,
+                                                    testTime : model.testTime,
+                                                    testDetails: [model.testDetails0, model.testDetails1 , model.testDetails2,  model.testDetails3 ,  model.testDetails4 ,  model.testDetails5 ,  model.testDetails6 ,  model.testDetails7 ,  model.testDetails8 ,  model.testDetails9 ] 
+                                                          }; 
+                                model.res = $http.post('/adminCreate', testData);
+                                console.log(testData)
+                                model.res.success(function(data, status, headers, config) {
+                                    alert("success");
+                                    document.location.href ='/adminVU'
+                                });
+                                model.res.error(function(data, status, headers, config) {
+                                    alert( "Some thing went wrong Please try after");
+                                }); 
+
+                            };
+
+                        }]);
+        </script>
+        <style type="text/css">
+            body {
+                position: relative; 
+            }
+            .padding-left20{padding-left: 20px;}
+            .padding-left50{padding-left: 50px;}
+            .padding-left100{padding-left: 100px;}
+            .margin-left25{margin-left: 25%;}
+            .padding-top20{padding-top: 20px;}
+            .padding-left80{padding-left: 80px}
+            footer a{color:#f5f5f5;}
+            .footer{background: #343a40 !important; padding: 30px;}
+        </style> 
+    </head>
+    <body data-spy="scroll" data-target=".navbar" data-offset="50" ng-clock ng-app="adminCon">
+        <div  ng-controller="adminContrl as admnctl">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">  
+                <ul class="navbar-nav">
+                     <li class="nav-item padding-left20">
+                        <a class="nav-link btn btn btn-outline-warning" href="/">HOME</a>
+                    </li>
+                    <li class="nav-item padding-left20" >
+                        <a class="nav-link btn btn btn-outline-success" href="/admin">Create Test</a>
+                    </li>
+                    <li class="nav-item padding-left20"> 
+                        <a class="nav-link btn btn btn-outline-info" href="/adminVU">View & Update & Delete Test</a>
+                    </li>
+                     <li class="nav-item padding-left20" >
+                        <a class="nav-link btn btn-outline-danger" href="/adminLU">List Of Users</a>
+                    </li>
+        <li class="nav-item padding-left20" ><a class="nav-link btn btn-outline-danger"  href="/logout">LOGOUT</a></li>
+                    
+                </ul>
+            </nav>
+            <div id="createSection" class="container-fluid bg-light" style="padding-top:100px;padding-bottom:100px;">
+                <h1 class="text-center">Create Test</h1>
+                <p class="">For Creating a test You must and should give all input values (EX:- you suppose to give Test Name and Test Time, 10 questions with respected options and Answer as well.)</p>
+                <div class="text-center">
+                    <form class="form-inline">
+                        <div class="padding-left20">  <label for="testName">Test Name:</label></div>
+                        <div class="padding-left20">  <input type="text" class="form-control" id="testName" required   max="10" min="4" maxlength="10" minlength='4' ></div>
+                        <div class="padding-left20">  <label for="testTime">Test Time:</label></div>
+                        <div class="padding-left20"> <input type="number" class="form-control" id="testTime" required   max="60" min="2" maxlength="60" minlength='2' ></div>
+                        <div class="padding-left20"> <button type="submit" class="btn btn-primary" ng-click="admnctl.readyToCreateTest();">Submit</button></div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div id="editSection" class="container-fluid bg-light" style="padding-top:100px;padding-bottom:100px;display: none;">
+                <p class="text-center">Hello admin please give question and options then select one answer Flag<p>
+                <form id="{{admnctl.testName}}" >
+                    <% for(i=0; i<=9 ; i++){  %>
+                    <div >
+                      <div class="form-inline">  <label>Q). <%= i %> </label> &nbsp;&nbsp;&nbsp;<input style="width: 90%" class="form-control" type="text" value="" placeholder="Please enter a Qustion Here" id="{{admnctl.testName}}<%= i %>" required/></div>
+                        <div class="radio padding-top20 padding-left80 ">
+                            <label><input type="radio" name="{{admnctl.testName}}<%= i %>" class="{{admnctl.testName}}<%= i %>a"> <input id="{{admnctl.testName}}<%= i %>a" type="text" value=""  required /></label>
+
+                            <label><input type="radio" name="{{admnctl.testName}}<%= i %>" class="{{admnctl.testName}}<%= i %>b" > <input id="{{admnctl.testName}}<%= i %>b"  type="text" value=""  required /> </label>
+
+                            <label><input type="radio" name="{{admnctl.testName}}<%= i %>" class="{{admnctl.testName}}<%= i %>c" > <input id="{{admnctl.testName}}<%= i %>c"  type="text" value=""  required /> </label>
+
+                            <label><input type="radio" name="{{admnctl.testName}}<%= i %>" class="{{admnctl.testName}}<%= i %>d" > <input id="{{admnctl.testName}}<%= i %>d" type="text" value=""  required /> </label>
+                        </div>
+                    </div>
+                    <% } %>
+                    
+                    <div class="text-center padding-top20"><button type="submit" class="btn btn-primary"  ng-click="admnctl.testQustionsSubmit(admnctl.testName);">Submit</button></div>
+                    </form>
+                </div>
+            <div class="clearfix"></div>
+        </div>
+        <footer class="text-center footer">
+  <p><a href='mailto:chandrashekar.mungi@gmail.com'>Chandrashekar.mungi@gmail.com</a></p>
+</footer>
+    </body>
+</html>
