@@ -6,7 +6,7 @@ module.exports = {
 	'facebookAuth' : {
 		'clientID' 		: '378193962628814', // your App ID
 		'clientSecret' 	: '5a495a6090cedf449958b5362d7d54d2', // your App Secret
-		'callbackURL' 	: 'http://localhost:8080/auth/facebook/callback'
+		'callbackURL' 	: 'http://ec2-18-220-160-8.us-east-2.compute.amazonaws.com:8080/auth/facebook/callback'
 	},
     'googleAuth' : {
 		'clientID' 		: '673184218402-pg0lk29k5fk3m2nuj54pus9algdqd93q.apps.googleusercontent.com',// your App ID
