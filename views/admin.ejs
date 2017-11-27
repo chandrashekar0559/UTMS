@@ -13,6 +13,7 @@
                             var model = this;
                             model.readyToCreateTest = function () {
                                 model.testName = $("#testName").val();
+                                model.testName.trim();
                                 model.testTime = $("#testTime").val();
                                 var testNameLength = ($("#testName").val()).length;
                                 if (model.testName != '' && model.testTime != '' && model.testTime > 1 && model.testTime < 60 && testNameLength > 3 && testNameLength < 12) {
