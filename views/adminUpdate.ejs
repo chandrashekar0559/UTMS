@@ -20,14 +20,17 @@
                                 model.testTime = tT;
                                 console.log("comming:::testUpateSubmit----" +model.testName);
                                 console.log("+=+=+="+model.testName);
-                                for (i = 0; i <= 2; i++) {
+                                for (i = 0; i <= 9; i++) {
                                     console.log("i--"+i);
+                                    model.testQuestionNum = i ;
                                     var getTestNames = model.testName+i;
                                     console.log($('#'+getTestNames).val());
                                     model.testQuestion = $('#'+getTestNames).val();
                                     if($('form input[name='+ model.testName+i+']:checked')){
                                     var answ = $('form input[name='+ model.testName+i+']:checked').attr('class');
                                         model.testAnswer=$('#'+answ).val();
+                                         model.checkId = answ;
+                                         console.log(model.checked)
                                         console.log(model.testName+i+"--Answer checked value is--"+model.testAnswer);
                                     }
                                     for (j = 1; j <= 4; j++) {
@@ -50,13 +53,35 @@
                                     }
                                      // console.log('testName--'+model.testName+'testTime--'+model.testTime+'testAnswer--'+model.testAnswer+'testQuestion--'+model.testQuestion+'testOptionA--'+model.testOptionA+'testOptionB--'+model.testOptionB+'testOptionC--'+model.testOptionC+'testOptionD--'+model.testOptionD);
                                       model.options=[model.testOptionA , model.testOptionB,  model.testOptionC , model.testOptionD ]
+                                     
+                                  if(model.testQuestion !='' && model.testQuestion !='undefined' && model.testAnswer !='' && model.testAnswer !='undefined' && model.testOptionA !='' && model.testOptionA !='undefined' && model.testOptionB !='' && model.testOptionB !='undefined' &&model.testOptionC !='' && model.testOptionC !='undefined' &&model.testOptionD !='' && model.testOptionD !='undefined' && model.checkId !='' && model.checkId !='undefined' ){
 
                                       if(i =='0'){
-                                        model.testDetails0 ={testQuestion:model.testQuestion ,testAnswer: model.testAnswer , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
-                                      }else if(i =='1'){
-                                        model.testDetails1 ={testQuestion:model.testQuestion ,testAnswer: model.testAnswer , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                        model.testDetails0 ={testQuestionNum: model.testQuestionNum ,testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='1'){
+                                        model.testDetails1 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
                                       }else if (i=='2'){
-                                        model.testDetails2 ={ testQuestion:model.testQuestion ,testAnswer: model.testAnswer , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                        model.testDetails2 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='3'){
+                                        model.testDetails3 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer,testAnswerID:model.checkId , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='4'){
+                                        model.testDetails4 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer,testAnswerID:model.checkId , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='5'){
+                                        model.testDetails5 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='6'){
+                                        model.testDetails6 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='7'){
+                                        model.testDetails7 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer,testAnswerID:model.checkId , testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='8'){
+                                        model.testDetails8 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }else if (i=='9'){
+                                        model.testDetails9 ={testQuestionNum: model.testQuestionNum , testQuestion:model.testQuestion ,testAnswer: model.testAnswer ,testAnswerID:model.checkId, testOptionA:model.testOptionA , testOptionB:model.testOptionB,  testOptionC:model.testOptionC , testOptionD:model.testOptionD}
+                                      }
+
+                                      }
+                                      else{
+                                        alert("Please fill the all detalis!!");
+                                        return false;
                                       }
 
                                       
@@ -64,8 +89,8 @@
                                 var testData = {
                                                    testName  :  model.testName ,
                                                     testTime : model.testTime,
-                                                    testDetails: [model.testDetails0 ,model.testDetails1, model.testDetails2 ] 
-                                                          }; 
+                                                    testDetails: [model.testDetails0, model.testDetails1 , model.testDetails2,  model.testDetails3 ,  model.testDetails4 ,  model.testDetails5 ,  model.testDetails6 ,  model.testDetails7 ,  model.testDetails8 ,  model.testDetails9 ] 
+                                                          };
                                 model.res = $http.post('/adminUpdate/<%-result._id%>', testData);
                                 console.log(testData)
                                 model.res.success(function(data, status, headers, config) {
